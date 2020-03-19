@@ -1,0 +1,21 @@
+{
+  "name": "recat-server",
+  "version": "0.1.0",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.3",
+    "@types/node": "^13.9.2",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.7.0",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "start": "nodemon src/index.ts",
+    "build": "tsc -p ./"
+  }
+}
