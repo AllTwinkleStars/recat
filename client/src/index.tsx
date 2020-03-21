@@ -1,12 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
-import './index.css';
-import App from './App';
+import { Listings } from "./sections";
 import * as serviceWorker from './serviceWorker';
 
 render(
   <React.StrictMode>
-    <App />
+    <Listings title="Recat Listings" />
   </React.StrictMode>,
   document.getElementById('root')
 );
