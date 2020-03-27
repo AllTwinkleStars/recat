@@ -1,5 +1,5 @@
 import React from "react";
-import { server } from "../../lib/api";
+import { server, useQuery } from "../../lib/api";
 import { DeleteListingData, DeleteListingVariables, ListingsData } from "./types";
 
 const LISTINGS = `
@@ -32,26 +32,36 @@ interface Props {
 
 export const Listings = ({ title }: Props) => {
 
-  const fetchListings = async () => {
-    const { data } = await server.fetch<ListingsData>({ query: LISTINGS });
-    console.log(data.listings);
-  };
+  const { data } = useQuery<ListingsData>(LISTINGS);
 
-  const deleteListing = async () => {
+  const deleteListing = async (id: string) => {
     const { data } = await server.fetch<DeleteListingData, DeleteListingVariables>({
       query: DELETE_LISTING,
       variables: {
-        id: "5e74b2259bd0bd6e29eb2a93"
+        id
       }
     });
-    console.log(data);
   }
+
+  const listings = data ? data.listings : null;
+
+  const listingsList = (
+    <ul>
+      {listings?.map(listing => {
+        return (
+          <li key={listing.id}>
+            {listing.title}
+            <button onClick={() => deleteListing(listing.id)}>Delete</button>
+          </li>
+        )
+      })}
+    </ul>
+  )
 
   return (
     <div>
       <h2>{title}</h2>
-      <button onClick={fetchListings}>Query Listings</button>
-      <button onClick={deleteListing}>Delete Listing</button>
+      {listingsList}
     </div>
   );
 };
