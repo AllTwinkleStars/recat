@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useReducer } from "react";
+import { useEffect, useCallback, useReducer } from "react";
 import { server } from "./server"
 
 interface State<TData> {
@@ -7,14 +7,10 @@ interface State<TData> {
   error: boolean;
 }
 
-interface QueryResult<TData> extends State<TData> {
-  refetch: () => void;
-}
-
 type Action<TData> =
   | { type: "FETCH" }
   | { type: "FETCH_SUCCESS", payload: TData }
-  | { type: "FETCH_ERROR" };
+  | { type: "FETCH_ERROR" }
 
 const reducer = <TData>() => (state: State<TData>, action: Action<TData>): State<TData> => {
   switch (action.type) {
@@ -22,11 +18,15 @@ const reducer = <TData>() => (state: State<TData>, action: Action<TData>): State
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
       return { ...state, data: action.payload, loading: false, error: false };
-      case "FETCH_ERROR":
-        return { ...state, loading: false, error: true };
-      default:
-        throw new Error();
+    case "FETCH_ERROR":
+      return { ...state, loading: false, error: true };
+    default:
+      throw new Error();
   }
+}
+
+interface QueryResult<TData> extends State<TData> {
+  refetch: () => void;
 }
 
 export const useQuery = <TData = any>(query: string): QueryResult<TData> => {
@@ -51,6 +51,7 @@ export const useQuery = <TData = any>(query: string): QueryResult<TData> => {
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({ type: "FETCH_ERROR" });
+        throw console.log(err);
       }
     };
 

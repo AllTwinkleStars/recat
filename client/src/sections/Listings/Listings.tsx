@@ -1,5 +1,5 @@
 import React from "react";
-import { server, useQuery, useMutation } from "../../lib/api";
+import { useQuery, useMutation } from "../../lib/api";
 import { DeleteListingData, DeleteListingVariables, ListingsData } from "./types";
 
 const LISTINGS = `
