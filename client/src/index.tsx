@@ -1,11 +1,19 @@
-import React from 'react';
-import { render } from 'react-dom';
+import React from "react";
+import { render } from "react-dom";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { Listings } from "./sections";
 import * as serviceWorker from './serviceWorker';
 
+const client = new ApolloClient({
+  uri: "/api"
+});
+
 render(
   <React.StrictMode>
-    <Listings title="Recat Listings" />
+    <ApolloProvider client={client}>
+      <Listings title="Recat Listings" />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
