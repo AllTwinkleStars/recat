@@ -1,1 +1,0 @@
-export { ListingsSkeleton } from "./ListingsSkeleton";
