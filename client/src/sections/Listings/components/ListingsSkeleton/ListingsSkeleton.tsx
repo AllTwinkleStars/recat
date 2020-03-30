@@ -28,4 +28,4 @@ export const ListingsSkeleton = ({ title, error = false }: Props) => {
       <Skeleton active paragraph={{ rows: 1 }} />
     </div>
   );
-};
+}

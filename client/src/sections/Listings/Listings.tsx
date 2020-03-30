@@ -21,7 +21,7 @@ const LISTINGS = gql`
       rating
     }
   }
-`;
+`
 
 const DELETE_LISTING = gql`
   mutation DeleteListing($id: ID!) {
@@ -29,7 +29,7 @@ const DELETE_LISTING = gql`
       id
     }
   }
-`;
+`
 
 interface Props {
   title: string;
@@ -103,4 +103,4 @@ export const Listings = ({ title }: Props) => {
       </Spin>
     </div>
   );
-};
+}

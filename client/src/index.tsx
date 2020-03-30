@@ -14,7 +14,7 @@ render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <Listings title="Recat Listings" />
-    </ApolloProvider>
+    </ApolloProvider>,
   </React.StrictMode>,
   document.getElementById('root')
 );
