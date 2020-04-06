@@ -1,7 +1,14 @@
 import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
 import { Database, Listing, User } from "../../../lib/types";
-import { ListingArgs, ListingBookingsArgs, ListingBookingsData } from "./types";
+import {
+  ListingArgs,
+  ListingBookingsArgs,
+  ListingBookingsData,
+  ListingsArgs,
+  ListingsData,
+  ListingsFilter
+} from "./types";
 import { authorize } from "../../../lib/utils";
 import { ObjectId } from "mongodb";
 
@@ -26,6 +33,34 @@ export const listingResolvers: IResolvers = {
         return listing;
       } catch (error) {
         throw new Error(`Failed to query listing: ${error}`);
+      }
+    },
+    listings: async (
+      _root: undefined,
+      { filter, limit, page }: ListingsArgs,
+      { db }: { db: Database }
+    ): Promise<ListingsData> => {
+      try {
+        const data: ListingsData = {
+          total: 0,
+          result: []
+        };
+
+        let cursor = await db.listings.find({});
+
+        if (filter) {
+          let sortDirection = filter === ListingsFilter.PRICE_LOW_TO_HIGH ? 1 : -1;
+          cursor = cursor.sort({ price: sortDirection });
+        }
+
+        cursor = cursor.skip(page > 0 ? (page - 1) * limit : 0).limit(limit);
+
+        data.total = await cursor.count();
+        data.result = await cursor.toArray();
+
+        return data;
+      } catch (error) {
+        throw new Error(`Failed to query listings: ${error}`);
       }
     }
   },
