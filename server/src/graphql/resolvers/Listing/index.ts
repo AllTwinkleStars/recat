@@ -7,10 +7,12 @@ import {
   ListingBookingsData,
   ListingsArgs,
   ListingsData,
-  ListingsFilter
+  ListingsFilter,
+  ListingsQuery
 } from "./types";
 import { authorize } from "../../../lib/utils";
 import { ObjectId } from "mongodb";
+import { Google } from "../../../lib/api";
 
 export const listingResolvers: IResolvers = {
   Query: {
@@ -37,16 +39,35 @@ export const listingResolvers: IResolvers = {
     },
     listings: async (
       _root: undefined,
-      { filter, limit, page }: ListingsArgs,
+      { location, filter, limit, page }: ListingsArgs,
       { db }: { db: Database }
     ): Promise<ListingsData> => {
       try {
+        const query: ListingsQuery = {};
         const data: ListingsData = {
+          region: null,
           total: 0,
           result: []
         };
 
-        let cursor = await db.listings.find({});
+        if (location) {
+          const { country, admin, city } = await Google.geocode(location);
+
+          if (country) {
+            query.country = country;
+          } else {
+            throw new Error("No country found");
+          }
+
+          if (admin) query.admin = admin;
+          if (city) query.city = city;
+
+          const cityText = city ? `${city}, ` : "";
+          const adminText = admin ? `${admin}, `: "";
+          data.region = `${cityText}${adminText}${country}`;
+        }
+
+        let cursor = await db.listings.find(query);
 
         if (filter) {
           let sortDirection = filter === ListingsFilter.PRICE_LOW_TO_HIGH ? 1 : -1;

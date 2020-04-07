@@ -2,6 +2,7 @@
   "name": "recat-server",
   "version": "0.1.0",
   "dependencies": {
+    "@google/maps": "^1.1.0",
     "apollo-server-express": "^2.11.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
@@ -14,6 +15,7 @@
     "@types/cookie-parser": "^1.4.2",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.3",
+    "@types/google__maps": "^0.5.12",
     "@types/lodash.merge": "^4.6.6",
     "@types/mongodb": "^3.5.2",
     "@types/node": "^13.9.2",
