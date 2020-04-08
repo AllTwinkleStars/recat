@@ -5,4 +5,5 @@ export { Listing } from "./Listing";
 export { Listings } from "./Listings";
 export { Login } from "./Login";
 export { NotFound } from "./NotFound";
+export { Stripe } from "./Stripe";
 export { User } from "./User";

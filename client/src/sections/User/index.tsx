@@ -8,11 +8,12 @@ import { Viewer } from "../../lib/types";
 import { UserBookings, UserListings, UserProfile } from "./components";
 import {
   User as UserData,
-  UserVariables
+  UserVariables,
 } from "../../lib/graphql/queries/User/__generated__/User";
 
 interface Props {
   viewer: Viewer;
+  setViewer: (viewer: Viewer) => void;
 }
 
 interface MatchParams {
@@ -23,25 +24,35 @@ const { Content } = Layout;
 
 const PAGE_LIMIT = 4;
 
-export const User = ({ viewer, match }: Props & RouteComponentProps<MatchParams>) => {
+export const User = ({
+  viewer,
+  setViewer,
+  match,
+}: Props & RouteComponentProps<MatchParams>) => {
   const [listingsPage, setListingsPage] = useState(1);
   const [bookingsPage, setBookingsPage] = useState(1);
-  const { data, loading, error } = useQuery<UserData, UserVariables>(USER, {
-    variables: {
-      id: match.params.id,
-      bookingsPage,
-      listingsPage,
-      limit: PAGE_LIMIT
+  const { data, loading, error, refetch } = useQuery<UserData, UserVariables>(
+    USER,
+    {
+      variables: {
+        id: match.params.id,
+        bookingsPage,
+        listingsPage,
+        limit: PAGE_LIMIT,
+      },
     }
-  });
+  );
+
+  const handleUserRefetch = async () => {
+    await refetch();
+  };
 
   if (loading || error) {
     return (
       <Content className="user">
-        {error ?
+        {error ? (
           <ErrorBanner description="This user may not exist or we've encountered an error. Please try again soon." />
-          : null
-        }
+        ) : null}
         <PageSkeleton />
       </Content>
     );
@@ -51,7 +62,13 @@ export const User = ({ viewer, match }: Props & RouteComponentProps<MatchParams>
   const viewerIsUser = viewer.id === match.params.id;
 
   const userProfileElement = user ? (
-    <UserProfile user={user} viewerIsUser={viewerIsUser} />
+    <UserProfile
+      user={user}
+      viewer={viewer}
+      viewerIsUser={viewerIsUser}
+      setViewer={setViewer}
+      handleUserRefetch={handleUserRefetch}
+    />
   ) : null;
 
   const userListings = user ? user.listings : null;
@@ -75,8 +92,16 @@ export const User = ({ viewer, match }: Props & RouteComponentProps<MatchParams>
     />
   ) : null;
 
+  const stripeError = new URL(window.location.href).searchParams.get(
+    "stripe_error"
+  );
+  const stripeErrorBanner = stripeError ? (
+    <ErrorBanner description="We had an issue connecting with Stripe. Please try again soon." />
+  ) : null;
+
   return (
     <Content className="user">
+      {stripeErrorBanner}
       <Row gutter={12} justify="center">
         <Col xs={24}>{userProfileElement}</Col>
         <Col xs={24}>
@@ -85,5 +110,5 @@ export const User = ({ viewer, match }: Props & RouteComponentProps<MatchParams>
         </Col>
       </Row>
     </Content>
-  )
+  );
 };
