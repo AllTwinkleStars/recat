@@ -16,7 +16,7 @@ export const UserBookings = ({
   userBookings,
   bookingsPage,
   limit,
-  setBookingsPage
+  setBookingsPage,
 }: Props) => {
   const total = userBookings ? userBookings.total : null;
   const bookings = userBookings ? userBookings.result : null;
@@ -27,20 +27,20 @@ export const UserBookings = ({
         gutter: 8,
         xs: 1,
         sm: 2,
-        lg: 4
+        lg: 4,
       }}
       dataSource={bookings}
       locale={{ emptyText: "You haven't made any bookings yet!" }}
       pagination={{
-        position:"top",
+        position: "top",
         current: bookingsPage,
         total: total ? total : undefined,
         defaultPageSize: limit,
         hideOnSinglePage: true,
         showLessItems: true,
-        onChange: (page: number) => setBookingsPage(page)
+        onChange: (page: number) => setBookingsPage(page),
       }}
-      renderItem={userBooking => {
+      renderItem={(userBooking) => {
         const bookingHistory = (
           <div className="user-bookings__booking-history">
             <div>
@@ -57,7 +57,7 @@ export const UserBookings = ({
             {bookingHistory}
             <ListingCard listing={userBooking.listing} />
           </List.Item>
-        )
+        );
       }}
     />
   ) : null;
@@ -68,12 +68,12 @@ export const UserBookings = ({
         Bookings
       </Title>
       <Paragraph className="user-bookings__description">
-        This section highlights the bookings you've made, and the check-in/check-out dates
-        associated with said bookings.
+        This section highlights the bookings you've made, and the
+        check-in/check-out dates associated with said bookings.
       </Paragraph>
       {userBookingsList}
     </div>
   ) : null;
 
   return userBookingsElement;
-}
+};

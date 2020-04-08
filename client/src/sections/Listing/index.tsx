@@ -3,11 +3,15 @@ import { RouteComponentProps } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 import { Moment } from "moment";
 import { Col, Layout, Row } from "antd";
-import { ListingBookings, ListingCreateBooking, ListingDetails } from "./components";
+import {
+  ListingBookings,
+  ListingCreateBooking,
+  ListingDetails,
+} from "./components";
 import { LISTING } from "../../lib/graphql/queries";
 import {
   Listing as ListingData,
-  ListingVariables
+  ListingVariables,
 } from "../../lib/graphql/queries/Listing/__generated__/Listing";
 import { PageSkeleton, ErrorBanner } from "../../lib/components";
 
@@ -23,21 +27,23 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
   const [checkInDate, setCheckInDate] = useState<Moment | null>(null);
   const [checkOutDate, setCheckOutDate] = useState<Moment | null>(null);
 
-  const { loading, data, error } = useQuery<ListingData, ListingVariables>(LISTING, {
-    variables: {
-      id: match.params.id,
-      bookingsPage,
-      limit: PAGE_LIMIT
+  const { loading, data, error } = useQuery<ListingData, ListingVariables>(
+    LISTING,
+    {
+      variables: {
+        id: match.params.id,
+        bookingsPage,
+        limit: PAGE_LIMIT,
+      },
     }
-  });
+  );
 
   if (loading || error) {
     return (
       <Content className="listings">
-        {error ?
-          <ErrorBanner description="This listing may not exist or we've encountered an error. Please try again soon." /> :
-          null
-        }
+        {error ? (
+          <ErrorBanner description="This listing may not exist or we've encountered an error. Please try again soon." />
+        ) : null}
         <PageSkeleton />
       </Content>
     );
@@ -46,7 +52,9 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
   const listing = data ? data.listing : null;
   const listingBookings = listing ? listing.bookings : null;
 
-  const listingDetailsElement = listing ? <ListingDetails listing={listing} /> : null;
+  const listingDetailsElement = listing ? (
+    <ListingDetails listing={listing} />
+  ) : null;
   const listingBookingsElement = listingBookings ? (
     <ListingBookings
       listingBookings={listingBookings}

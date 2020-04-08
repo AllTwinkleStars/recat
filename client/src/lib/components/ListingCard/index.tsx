@@ -12,7 +12,7 @@ interface Props {
     address: string;
     price: number;
     numOfGuests: number;
-  }
+  };
 }
 
 const { Text, Title } = Typography;
@@ -46,10 +46,12 @@ export const ListingCard = ({ listing }: Props) => {
           </div>
           <div className="listing-card__dimensions listing-card__dimensions--guests">
             <UserOutlined style={{ color: iconColor }} />{" "}
-            <Text>{numOfGuests} {numOfGuests > 1 ? "guests" : "guest"}</Text>
+            <Text>
+              {numOfGuests} {numOfGuests > 1 ? "guests" : "guest"}
+            </Text>
           </div>
         </div>
       </Card>
     </Link>
   );
-}
+};

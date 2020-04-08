@@ -8,7 +8,7 @@ interface Props {
 
 export const ErrorBanner = ({
   message = "Uh oh! Something went wrong.",
-  description = "Looks like something went wrong. Please check your connection or try again later."
+  description = "Looks like something went wrong. Please check your connection or try again later.",
 }: Props) => {
   return (
     <Alert
@@ -20,4 +20,4 @@ export const ErrorBanner = ({
       className="error-banner"
     />
   );
-}
+};

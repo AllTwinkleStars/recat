@@ -12,7 +12,16 @@ interface Props {
 const { Paragraph, Title } = Typography;
 
 export const ListingDetails = ({ listing }: Props) => {
-  const { title, description, image, type, address, city, numOfGuests, host } = listing;
+  const {
+    title,
+    description,
+    image,
+    type,
+    address,
+    city,
+    numOfGuests,
+    host,
+  } = listing;
 
   return (
     <div className="listing-details">
@@ -22,7 +31,11 @@ export const ListingDetails = ({ listing }: Props) => {
       />
 
       <div className="listing-details__information">
-        <Paragraph type="secondary" ellipsis className="listing-deatils__city-address">
+        <Paragraph
+          type="secondary"
+          ellipsis
+          className="listing-deatils__city-address"
+        >
           <Link to={`/listings/${city}`}>
             <EnvironmentFilled style={{ color: iconColor }} /> {city}
           </Link>
@@ -51,10 +64,14 @@ export const ListingDetails = ({ listing }: Props) => {
         <Title level={4}>About this space</Title>
         <div className="listing-details__about-items">
           <Tag color="magenta">{type}</Tag>
-          <Tag color="magenta">{numOfGuests} {numOfGuests > 0 ? "Guests" : "Guest"}</Tag>
+          <Tag color="magenta">
+            {numOfGuests} {numOfGuests > 0 ? "Guests" : "Guest"}
+          </Tag>
         </div>
-        <Paragraph ellipsis={{ rows: 3, expandable: true }}>{description}</Paragraph>
+        <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+          {description}
+        </Paragraph>
       </div>
     </div>
   );
-}
+};

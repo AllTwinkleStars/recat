@@ -18,7 +18,9 @@ export const HomeHero = ({ onSearch }: Props) => {
   return (
     <div className="home-hero">
       <div className="home-hero__search">
-        <Title className="home-hero__title">Find a place you'll love to stay at</Title>
+        <Title className="home-hero__title">
+          Find a place you'll love to stay at
+        </Title>
         <Search
           placeholder="Where would you like to stay?"
           size="large"
@@ -40,15 +42,19 @@ export const HomeHero = ({ onSearch }: Props) => {
         </Col>
         <Col xs={0} md={6}>
           <Link to="/listings/los%20angeles">
-            <Card cover={<img alt="Los Angeles" src={losAngelesImage} />}>Los Angeles</Card>
+            <Card cover={<img alt="Los Angeles" src={losAngelesImage} />}>
+              Los Angeles
+            </Card>
           </Link>
         </Col>
         <Col xs={12} md={6}>
           <Link to="/listings/toronto">
-            <Card cover={<img alt="Toronto" src={torontoImage} />}>Toronto</Card>
+            <Card cover={<img alt="Toronto" src={torontoImage} />}>
+              Toronto
+            </Card>
           </Link>
         </Col>
       </Row>
     </div>
-  )
-}
+  );
+};

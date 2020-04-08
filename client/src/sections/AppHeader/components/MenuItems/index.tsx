@@ -6,7 +6,10 @@ import { LogOut as LogOutData } from "../../../../lib/graphql/mutations/LogOut/_
 import { Button, Menu, Avatar } from "antd";
 import { HomeOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { Viewer } from "../../../../lib/types";
-import { displaySuccessNotification, displayErrorMessage } from "../../../../lib/utils";
+import {
+  displaySuccessNotification,
+  displayErrorMessage,
+} from "../../../../lib/utils";
 
 interface Props {
   viewer: Viewer;
@@ -16,9 +19,8 @@ interface Props {
 const { Item, SubMenu } = Menu;
 
 export const MenuItems = ({ viewer, setViewer }: Props) => {
-
   const [logOut] = useMutation<LogOutData>(LOG_OUT, {
-    onCompleted: data => {
+    onCompleted: (data) => {
       if (data && data.logOut) {
         setViewer(data.logOut);
         sessionStorage.removeItem("token");
@@ -26,30 +28,33 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
       }
     },
     onError: () => {
-      displayErrorMessage("Sorry! We weren't able to log you out. Please tr again later!");
-    }
+      displayErrorMessage(
+        "Sorry! We weren't able to log you out. Please tr again later!"
+      );
+    },
   });
 
   const handleLogOut = () => {
     logOut();
-  }
+  };
 
-  const subMenuLogin = viewer.id && viewer.avatar ? (
-    <SubMenu title={<Avatar src={viewer.avatar} />}>
-      <Item key={`/user/${viewer.id}`}>
-        <Link to={`/user/${viewer.id}`}>
-          <UserOutlined />
-          Profile
-        </Link>
-      </Item>
-      <Item key="/logout">
-        <div onClick={handleLogOut}>
-          <LogoutOutlined />
-          Log out
-        </div>
-      </Item>
-    </SubMenu>
-  ) : (
+  const subMenuLogin =
+    viewer.id && viewer.avatar ? (
+      <SubMenu title={<Avatar src={viewer.avatar} />}>
+        <Item key={`/user/${viewer.id}`}>
+          <Link to={`/user/${viewer.id}`}>
+            <UserOutlined />
+            Profile
+          </Link>
+        </Item>
+        <Item key="/logout">
+          <div onClick={handleLogOut}>
+            <LogoutOutlined />
+            Log out
+          </div>
+        </Item>
+      </SubMenu>
+    ) : (
       <Item key="/login">
         <Link to="/login">
           <Button type="primary">Sign In</Button>
@@ -68,4 +73,4 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
       {subMenuLogin}
     </Menu>
   );
-}
+};

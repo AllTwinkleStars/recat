@@ -14,4 +14,4 @@ export const AppHeaderSkeleton = () => {
       </div>
     </Header>
   );
-}
+};

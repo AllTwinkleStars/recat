@@ -18,25 +18,26 @@ export const ListingCreateBooking = ({
   checkInDate,
   checkOutDate,
   setCheckInDate,
-  setCheckOutDate
+  setCheckOutDate,
 }: Props) => {
-
   const isDateDisabled = (currentDate?: Moment) => {
     if (!currentDate) {
       return false;
     }
     return currentDate.isBefore(moment().endOf("day"));
-  }
+  };
 
   const verifyAndSetCheckOutDate = (selectedCheckOutDate: Moment | null) => {
     if (checkInDate && selectedCheckOutDate) {
       if (moment(selectedCheckOutDate).isBefore(checkInDate, "days")) {
-        return displayErrorMessage(`You cannot book a date of check out to be prior to check in!`);
+        return displayErrorMessage(
+          `You cannot book a date of check out to be prior to check in!`
+        );
       }
     }
 
     setCheckOutDate(selectedCheckOutDate);
-  }
+  };
 
   const checkOutInputDisabled = !checkInDate;
   const proceedButtonDisabled = !checkInDate || !checkOutDate;
@@ -59,7 +60,7 @@ export const ListingCreateBooking = ({
               format={"DD/MM/YYYY"}
               showToday={false}
               disabledDate={isDateDisabled}
-              onChange={dateValue => setCheckInDate(dateValue)}
+              onChange={(dateValue) => setCheckInDate(dateValue)}
               onOpenChange={() => setCheckOutDate(null)}
             />
           </div>
@@ -71,7 +72,7 @@ export const ListingCreateBooking = ({
               showToday={false}
               disabledDate={isDateDisabled}
               disabled={checkOutInputDisabled}
-              onChange={dateValue => verifyAndSetCheckOutDate(dateValue)}
+              onChange={(dateValue) => verifyAndSetCheckOutDate(dateValue)}
             />
           </div>
         </div>
@@ -80,10 +81,11 @@ export const ListingCreateBooking = ({
           size="large"
           type="primary"
           disabled={proceedButtonDisabled}
-          className="listing-booking__card-cta">
+          className="listing-booking__card-cta"
+        >
           Proceed to Payment
         </Button>
       </Card>
     </div>
   );
-}
+};

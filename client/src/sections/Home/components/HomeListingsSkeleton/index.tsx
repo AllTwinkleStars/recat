@@ -14,7 +14,7 @@ export const HomeListingsSkeleton = () => {
           gutter: 8,
           xs: 1,
           sm: 2,
-          lg: 4
+          lg: 4,
         }}
         dataSource={emptyData}
         renderItem={() => (
@@ -32,5 +32,5 @@ export const HomeListingsSkeleton = () => {
         )}
       />
     </div>
-  )
-}
+  );
+};

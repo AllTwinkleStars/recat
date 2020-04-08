@@ -16,7 +16,7 @@ export const UserListings = ({
   userListings,
   listingsPage,
   limit,
-  setListingsPage
+  setListingsPage,
 }: Props) => {
   const { total, result } = userListings;
 
@@ -26,7 +26,7 @@ export const UserListings = ({
         gutter: 8,
         xs: 1,
         sm: 2,
-        lg: 4
+        lg: 4,
       }}
       dataSource={result}
       locale={{ emptyText: "User doesn't have any listings yet!" }}
@@ -37,9 +37,9 @@ export const UserListings = ({
         defaultPageSize: limit,
         hideOnSinglePage: true,
         showLessItems: true,
-        onChange: (page: number) => setListingsPage(page)
+        onChange: (page: number) => setListingsPage(page),
       }}
-      renderItem={userListing => (
+      renderItem={(userListing) => (
         <List.Item>
           <ListingCard listing={userListing} />
         </List.Item>
@@ -53,9 +53,10 @@ export const UserListings = ({
         Listings
       </Title>
       <Paragraph className="user-listings__description">
-        This section highlights the listings this user currently hosts and
-        has made available for bookings.
-      </Paragraph>{userListingsList}
+        This section highlights the listings this user currently hosts and has
+        made available for bookings.
+      </Paragraph>
+      {userListingsList}
     </div>
-  )
+  );
 };

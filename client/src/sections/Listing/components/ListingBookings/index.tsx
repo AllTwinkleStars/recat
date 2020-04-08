@@ -16,7 +16,7 @@ export const ListingBookings = ({
   listingBookings,
   bookingsPage,
   limit,
-  setBookingsPage
+  setBookingsPage,
 }: Props) => {
   const total = listingBookings ? listingBookings.total : null;
   const bookings = listingBookings ? listingBookings.result : null;
@@ -27,7 +27,7 @@ export const ListingBookings = ({
         gutter: 8,
         xs: 1,
         sm: 2,
-        lg: 3
+        lg: 3,
       }}
       dataSource={bookings}
       locale={{ emptyText: "No bookings have been made y et!" }}
@@ -38,9 +38,9 @@ export const ListingBookings = ({
         defaultPageSize: limit,
         hideOnSinglePage: true,
         showLessItems: true,
-        onChange: (page: number) => setBookingsPage(page)
+        onChange: (page: number) => setBookingsPage(page),
       }}
-      renderItem={listingBooking => {
+      renderItem={(listingBooking) => {
         const bookingHistory = (
           <div className="user-bookings__booking-history">
             <div>
@@ -56,10 +56,14 @@ export const ListingBookings = ({
           <List.Item>
             {bookingHistory}
             <Link to={`/user/${listingBooking.tenant.id}`}>
-              <Avatar src={listingBooking.tenant.avatar} size={64} shape="square" />
+              <Avatar
+                src={listingBooking.tenant.avatar}
+                size={64}
+                shape="square"
+              />
             </Link>
           </List.Item>
-        )
+        );
       }}
     />
   ) : null;
@@ -75,4 +79,4 @@ export const ListingBookings = ({
   ) : null;
 
   return listingBookingsElement;
-}
+};

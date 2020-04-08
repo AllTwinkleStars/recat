@@ -34,6 +34,7 @@ export const UserProfile = ({
     {
       onCompleted: (data) => {
         if (data && data.disconnectStripe) {
+          setViewer({ ...viewer, hasWallet: data.disconnectStripe.hasWallet });
           displaySuccessNotification(
             "You've successfully disconnected from Stripe!",
             "You'll have to reconnect with Stripe to continue to create listings."
