@@ -1,6 +1,6 @@
 import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
-import { Database, Listing, User } from "../../../lib/types";
+import { Database, Listing, ListingType, User } from "../../../lib/types";
 import {
   ListingArgs,
   ListingBookingsArgs,
@@ -8,11 +8,25 @@ import {
   ListingsArgs,
   ListingsData,
   ListingsFilter,
-  ListingsQuery
+  ListingsQuery,
+  HostListingArgs,
+  HostListingInput
 } from "./types";
 import { authorize } from "../../../lib/utils";
 import { ObjectId } from "mongodb";
 import { Google } from "../../../lib/api";
+
+const verifyHostListingInput = ({ title, description, type, price }: HostListingInput) => {
+  if (title.length > 100) {
+    throw new Error("Listing title must be under 100 characters");
+  }
+  if (description.length > 5000) {
+    throw new Error("Listing description must be under 5000 characters");
+  }
+  if (price < 0) {
+    throw new Error("Listing price must be greater than 0");
+  }
+};
 
 export const listingResolvers: IResolvers = {
   Query: {
@@ -63,7 +77,7 @@ export const listingResolvers: IResolvers = {
           if (city) query.city = city;
 
           const cityText = city ? `${city}, ` : "";
-          const adminText = admin ? `${admin}, `: "";
+          const adminText = admin ? `${admin}, ` : "";
           data.region = `${cityText}${adminText}${country}`;
         }
 
@@ -83,6 +97,45 @@ export const listingResolvers: IResolvers = {
       } catch (error) {
         throw new Error(`Failed to query listings: ${error}`);
       }
+    }
+  },
+  Mutation: {
+    hostListing: async (
+      _root: undefined,
+      { input }: HostListingArgs,
+      { db, req }: { db: Database, req: Request }
+    ): Promise<Listing> => {
+      verifyHostListingInput(input);
+
+      let viewer = await authorize(db, req);
+      if (!viewer) {
+        throw new Error("Viewer cannot be found");
+      }
+
+      const { country, admin, city } = await Google.geocode(input.address);
+      if (!country || !admin || !city) {
+        throw new Error("Invalid address input");
+      }
+
+      const insertResult = await db.listings.insertOne({
+        _id: new ObjectId(),
+        ...input,
+        bookings: [],
+        bookingsIndex: {},
+        country,
+        admin,
+        city,
+        host: viewer._id
+      });
+
+      const insertedListing: Listing = insertResult.ops[0];
+
+      await db.users.updateOne(
+        { _id: viewer._id },
+        { $push: { listings: insertedListing._id } }
+      );
+
+      return insertedListing;
     }
   },
   Listing: {
