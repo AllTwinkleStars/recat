@@ -30,7 +30,7 @@ export const ListingBookings = ({
         lg: 3,
       }}
       dataSource={bookings}
-      locale={{ emptyText: "No bookings have been made y et!" }}
+      locale={{ emptyText: "No bookings have been made yet!" }}
       pagination={{
         position: "bottom",
         current: bookingsPage,
