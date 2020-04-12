@@ -164,7 +164,7 @@ export const listingResolvers: IResolvers = {
     bookings: async (
       listing: Listing,
       { limit, page }: ListingBookingsArgs,
-      { db, req }: { db: Database, req: Request }
+      { db }: { db: Database }
     ): Promise<ListingBookingsData | null> => {
       try {
         if (!listing.authorized) {
