@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import { Redirect, RouteComponentProps } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { Layout, Spin } from "antd";
 import { Viewer } from "../../lib/types";
 import { CONNECT_STRIPE } from "../../lib/graphql/mutations";
@@ -18,11 +18,7 @@ interface Props {
   setViewer: (viewer: Viewer) => void;
 }
 
-export const Stripe = ({
-  viewer,
-  setViewer,
-  history,
-}: Props & RouteComponentProps) => {
+export const Stripe = ({ viewer, setViewer }: Props) => {
   const [connectStripe, { data, loading, error }] = useMutation<
     ConnectStripeData,
     ConnectStripeVariables
@@ -38,6 +34,7 @@ export const Stripe = ({
     },
   });
   const connectStripeRef = useRef(connectStripe);
+  const history = useHistory();
 
   useScrollToTop();
 
