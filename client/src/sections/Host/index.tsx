@@ -31,6 +31,7 @@ import {
   displaySuccessNotification,
 } from "../../lib/utils";
 import { HOST_LISTING } from "../../lib/graphql/mutations";
+import { useScrollToTop } from "../../lib/hooks";
 
 const { Content } = Layout;
 const { Text, Title } = Typography;
@@ -56,6 +57,8 @@ export const Host = ({ viewer }: Props) => {
       );
     },
   });
+
+  useScrollToTop();
 
   const [form] = Form.useForm();
 

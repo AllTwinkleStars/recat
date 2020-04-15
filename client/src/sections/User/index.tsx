@@ -10,6 +10,7 @@ import {
   User as UserData,
   UserVariables,
 } from "../../lib/graphql/queries/User/__generated__/User";
+import { useScrollToTop } from "../../lib/hooks";
 
 interface Props {
   viewer: Viewer;
@@ -43,6 +44,8 @@ export const User = ({
       fetchPolicy: "cache-and-network",
     }
   );
+
+  useScrollToTop();
 
   const handleUserRefetch = async () => {
     await refetch();

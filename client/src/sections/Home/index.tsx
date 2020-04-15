@@ -14,6 +14,7 @@ import { displayErrorMessage } from "../../lib/utils";
 import mapBackground from "./assets/map-background.jpg";
 import sanFransiscoImage from "./assets/san-fransisco.jpg";
 import cancunImage from "./assets/cancun.jpg";
+import { useScrollToTop } from "../../lib/hooks";
 
 const { Content } = Layout;
 const { Paragraph, Title } = Typography;
@@ -34,6 +35,18 @@ export const Home = ({ history }: RouteComponentProps) => {
     }
   );
 
+  useScrollToTop();
+
+  const onSearch = (value: string) => {
+    const trimmedValue = value.trim();
+
+    if (trimmedValue) {
+      history.push(`/listings/${trimmedValue}`);
+    } else {
+      displayErrorMessage("Please enter a valid search!");
+    }
+  };
+
   const renderListingSection = () => {
     if (loading) {
       return <HomeListingsSkeleton />;
@@ -49,16 +62,6 @@ export const Home = ({ history }: RouteComponentProps) => {
     }
 
     return null;
-  };
-
-  const onSearch = (value: string) => {
-    const trimmedValue = value.trim();
-
-    if (trimmedValue) {
-      history.push(`/listings/${trimmedValue}`);
-    } else {
-      displayErrorMessage("Please enter a valid search!");
-    }
   };
 
   return (

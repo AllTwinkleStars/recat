@@ -14,6 +14,7 @@ import {
   ListingsPagination,
   ListingsSkeleton,
 } from "./components";
+import { useScrollToTop } from "../../lib/hooks";
 
 const { Content } = Layout;
 const { Paragraph, Title } = Typography;
@@ -39,6 +40,8 @@ export const Listings = ({ match }: RouteComponentProps<MatchParams>) => {
       },
     }
   );
+
+  useScrollToTop();
 
   useEffect(() => {
     setPage(1);
